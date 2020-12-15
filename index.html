@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    <div id="canvas"></div>
+    <!-- <div id="canvas"></div>
     <script>
-        canvas.onclick = (e) => {
+        canvas.onmousemove = (e) => {
             console.log(e.clientX);
             console.log(e.clientY);
 
@@ -29,6 +29,37 @@
             canvas.appendChild(div);
         }
 
+    </script> -->
+
+    <canvas id="canvas" height="100px" width="100px"> </canvas>
+    <script>
+        //canvas 画线
+        let canvas = document.getElementById("canvas");
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        let ctx = canvas.getContext("2d")
+        let painting = false
+        ctx.fillStyle = "blue";
+        //点击鼠标画
+        canvas.onmousedown = () => {
+            painting = true;
+        }
+
+        // ctx.fillRect = (20, 20, 66, 66)
+        canvas.onmousemove = (e) => {
+            if (painting === true) {
+                ctx.beginPath();
+                ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill()
+                // ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10);
+            } else {
+                console.log("萨摩耶")
+            }
+        }
+        canvas.onmouseup = () => {
+            painting = false;
+        }
     </script>
 </body>
 

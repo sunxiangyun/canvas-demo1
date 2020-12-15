@@ -5,6 +5,8 @@
 }
 
 #canvas {
-    height: 100vh;
-    border: 1px solid red;
+    /* height: 100vh;
+    height: 100vh; */
+    border: 1px solid rgb(216, 177, 177);
+    display: block;
 }

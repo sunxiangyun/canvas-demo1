@@ -9,27 +9,6 @@
 </head>
 
 <body>
-    <!-- <div id="canvas"></div>
-    <script>
-        canvas.onmousemove = (e) => {
-            console.log(e.clientX);
-            console.log(e.clientY);
-
-            let div = document.createElement('div');
-            div.style.position = "absolute"
-            div.style.left = e.clientX + 'px';
-            div.style.top = e.clientY + 'px';
-            // div.style.border = '1px solid red';
-            div.style.width = '5px';
-            div.style.height = '5px';
-            div.style.marginLeft = '-3px';
-            div.style.marginTop = '-3px';
-            div.style.borderRadius = '50%';
-            div.style.backgroundColor = 'black'
-            canvas.appendChild(div);
-        }
-
-    </script> -->
 
     <canvas id="canvas" height="100px" width="100px"> </canvas>
     <script>
@@ -38,27 +17,58 @@
         canvas.width = document.documentElement.clientWidth;
         canvas.height = document.documentElement.clientHeight;
         let ctx = canvas.getContext("2d")
-        let painting = false
-        ctx.fillStyle = "blue";
-        //点击鼠标画
-        canvas.onmousedown = () => {
-            painting = true;
-        }
 
-        // ctx.fillRect = (20, 20, 66, 66)
-        canvas.onmousemove = (e) => {
-            if (painting === true) {
-                ctx.beginPath();
-                ctx.arc(e.clientX, e.clientY, 10, 0, 2 * Math.PI);
-                ctx.stroke();
-                ctx.fill()
-                // ctx.fillRect(e.clientX - 5, e.clientY - 5, 10, 10);
-            } else {
-                console.log("萨摩耶")
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "none";
+
+        //操作流畅
+        ctx.lineWidth = 6;
+        ctx.lineCap = "round";
+
+        let painting = false;
+        let last;
+
+        var isTouchDevice = 'ontouchstart' in
+            document.documentElement;
+        if (isTouchDevice) {
+            canvas.ontouchstart = (e) => {
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+                last = [x, y];
+
+            }
+            canvas.ontouchmove = (e) => {
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
+
+                drawLine(last[0], last[1], x, y);
+                last = [x, y];
+            }
+        } else {
+
+            //点击鼠标画
+            canvas.onmousedown = (e) => {
+                painting = true;
+                last = [e.clientX, e.clientY]
+            }
+
+            // ctx.fillRect = (20, 20, 66, 66)
+            canvas.onmousemove = (e) => {
+                if (painting === true) {
+                    drawLine(last[0], last[1], e.clientX, e.clientY);
+                    last = [e.clientX, e.clientY]
+                }
+            }
+            canvas.onmouseup = () => {
+                painting = false;
             }
         }
-        canvas.onmouseup = () => {
-            painting = false;
+        function drawLine(x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1,);
+            ctx.lineTo(x2, y2);
+            ctx.stroke()
+
         }
     </script>
 </body>
